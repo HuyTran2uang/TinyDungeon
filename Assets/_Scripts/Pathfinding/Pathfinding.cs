@@ -46,8 +46,47 @@ public class Pathfinding : MonoBehaviour
 
                     if (!openSet.Contains(neighbour))
                         openSet.Add(neighbour);
-                    else
-                        openSet.UpdateItem(neighbour);
+                }
+            }
+        }
+    }
+
+    public void FindPathToTransform(Vector3 startPos, Transform target)
+    {
+        Node startNode = grid.GetNodeFromPos(startPos);
+        Node targetNode = grid.GetNodeFromPos(target.position);
+
+        if (startNode.centerPos == targetNode.centerPos) return;
+
+        Heap<Node> openSet = new Heap<Node>(grid.MaxSize);
+        HashSet<Node> closedSet = new HashSet<Node>();
+        openSet.Add(startNode);
+
+        while (openSet.Count > 0)
+        {
+            Node currentNode = openSet.RemoveFirst();
+            closedSet.Add(currentNode);
+
+            if (currentNode == targetNode)
+            {
+                RetracePath(startNode, targetNode);
+                return;
+            }
+
+            foreach (Node neighbour in grid.GetNeighborNodes(currentNode))
+            {
+                if (!neighbour.walkable && grid.GetNodeFromPos(target.position) != neighbour || closedSet.Contains(neighbour))
+                    continue;
+
+                int newMovementCostToNeighbour = currentNode.gCost + GetDistance(currentNode, neighbour);
+                if (newMovementCostToNeighbour < neighbour.gCost || !openSet.Contains(neighbour))
+                {
+                    neighbour.gCost = newMovementCostToNeighbour;
+                    neighbour.hCost = GetDistance(neighbour, targetNode);
+                    neighbour.parent = currentNode;
+
+                    if (!openSet.Contains(neighbour))
+                        openSet.Add(neighbour);
                 }
             }
         }

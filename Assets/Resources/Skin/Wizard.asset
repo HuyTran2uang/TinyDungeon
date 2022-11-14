@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 224ed53dd34f5244dbfaa2d8909b6bfb, type: 3}
+  m_Name: Wizard
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: Wizard
+  <SkinSlot>k__BackingField: 2
+  <Image>k__BackingField: {fileID: 129122200, guid: 597ed162e470b6941bd944019b8ce012, type: 3}
+  <PriceBuy>k__BackingField: 0

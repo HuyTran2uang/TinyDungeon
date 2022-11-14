@@ -4,7 +4,7 @@ using UnityEngine;
 public class WeaponCtrl : MonoBehaviour
 {
     [field: SerializeField]
-    public WeaponSO WeaponSO { get; set; }
+    public EquipmentSO Weapon { get; set; }
     SpriteRenderer spriteRenderer;
     Vector3 originalEuler;
 
@@ -20,8 +20,8 @@ public class WeaponCtrl : MonoBehaviour
 
     private void Update()
     {
-        if (WeaponSO != null)
-            spriteRenderer.sprite = WeaponSO.ItemImage;
+        if (Weapon != null)
+            spriteRenderer.sprite = Weapon.ItemImage;
     }
 
     public void Attack()
@@ -37,8 +37,8 @@ public class WeaponCtrl : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
     }
 
-    public void ChangeWeapon(WeaponSO _base)
+    public void ChangeWeapon(EquipmentSO _base)
     {
-        WeaponSO = _base;
+        Weapon = _base;
     }
 }

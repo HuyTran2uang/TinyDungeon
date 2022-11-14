@@ -1,21 +1,47 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    // [SerializeField] private BaseEnemy _base;
-    public int currentHealth;
+    [SerializeField] private EnemySO _base;
+    EnemyBar _UIEnemyBar;
 
-    public void TakeDamage(int damage)
+    public string Name
     {
-        currentHealth -= damage;
-        if (currentHealth <= 0)
-            Die();
+        get { return _base.Name; }
     }
 
-    private void Die()
+    public EnemyType Type
     {
-        Destroy(gameObject);
+        get { return _base.Type; }
+    }
+
+    public int Health
+    {
+        get { return _base.Health; }
+    }
+
+    public int Attack
+    {
+        get { return _base.Attack; }
+    }
+
+    public int Armor
+    {
+        get { return _base.Armor; }
+    }
+
+    public float Speed
+    {
+        get { return _base.Speed / 100; }
+    }
+
+    private void Awake()
+    {
+        _UIEnemyBar = GetComponentInChildren<EnemyBar>();
+    }
+
+    private void OnEnable()
+    {
+        _UIEnemyBar.SetNameText(Name);
     }
 }

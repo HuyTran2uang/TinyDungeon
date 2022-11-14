@@ -41,12 +41,7 @@ public class Bullet : MonoBehaviour
         Collider2D hit = Physics2D.OverlapCircle(transform.position, hitBox, LayerMask.GetMask("Enemy"));
         if (hit == null) return;
         if (hit.transform != Target) return;
-        hit.GetComponent<Enemy>().TakeDamage(Damage);
+        hit.GetComponent<IDamageable>().TakeDamage(Damage);
         Destroy(gameObject);
-    }
-
-    void OnDrawGizmos()
-    {
-        Gizmos.DrawWireSphere(transform.position, hitBox);
     }
 }
