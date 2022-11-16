@@ -6,4 +6,7 @@ using UnityEngine;
 public class GameData
 {
     public PlayerData playerData;
+    public Skin[] skins;
+    public ItemSO[] itemsEquipping;
+    public ItemSO[] inventoryData;
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Equipment : MonoBehaviourSingleton<Equipment>
 {
-    public List<EquipmentSO> Items = new List<EquipmentSO>();
+    public List<EquipmentSO> items;
 
     PlayerType Type => Player.Instance.Type;
 
@@ -12,7 +12,7 @@ public class Equipment : MonoBehaviourSingleton<Equipment>
         get
         {
             int value = 0;
-            foreach (var item in Items)
+            foreach (var item in items)
             {
                 if (Type == PlayerType.Melee)
                 {
@@ -41,7 +41,7 @@ public class Equipment : MonoBehaviourSingleton<Equipment>
         get
         {
             int value = 0;
-            foreach (var item in Items)
+            foreach (var item in items)
             {
                 if (Type != PlayerType.Melee)
                     if (item.EquipmentSlot == EquipmentSlot.Shield) continue;
@@ -55,7 +55,7 @@ public class Equipment : MonoBehaviourSingleton<Equipment>
         get
         {
             int value = 0;
-            foreach (var item in Items)
+            foreach (var item in items)
             {
                 value += item.Speed;
             }
@@ -67,7 +67,7 @@ public class Equipment : MonoBehaviourSingleton<Equipment>
         get
         {
             int value = 0;
-            foreach (var item in Items)
+            foreach (var item in items)
             {
                 value += item.RecoveryHp;
             }
@@ -79,7 +79,7 @@ public class Equipment : MonoBehaviourSingleton<Equipment>
         get
         {
             int value = 0;
-            foreach (var item in Items)
+            foreach (var item in items)
             {
                 value += item.RecoveryMp;
             }
@@ -91,7 +91,7 @@ public class Equipment : MonoBehaviourSingleton<Equipment>
         get
         {
             float value = 0;
-            foreach (var item in Items)
+            foreach (var item in items)
             {
                 value += item.RecoveryHealthPercent;
             }
@@ -103,7 +103,7 @@ public class Equipment : MonoBehaviourSingleton<Equipment>
         get
         {
             float value = 0;
-            foreach (var item in Items)
+            foreach (var item in items)
             {
                 value += item.RecoveryManaPercent;
             }
@@ -115,7 +115,7 @@ public class Equipment : MonoBehaviourSingleton<Equipment>
         get
         {
             int value = 0;
-            foreach (var item in Items)
+            foreach (var item in items)
             {
                 value += item.Melee;
             }
@@ -127,7 +127,7 @@ public class Equipment : MonoBehaviourSingleton<Equipment>
         get
         {
             int value = 0;
-            foreach (var item in Items)
+            foreach (var item in items)
             {
                 value += item.Distance;
             }
@@ -139,7 +139,7 @@ public class Equipment : MonoBehaviourSingleton<Equipment>
         get
         {
             int value = 0;
-            foreach (var item in Items)
+            foreach (var item in items)
             {
                 value += item.Magic;
             }
@@ -151,7 +151,7 @@ public class Equipment : MonoBehaviourSingleton<Equipment>
         get
         {
             int value = 0;
-            foreach (var item in Items)
+            foreach (var item in items)
             {
                 value += item.Defense;
             }
@@ -159,30 +159,29 @@ public class Equipment : MonoBehaviourSingleton<Equipment>
         }
     }
 
-    public void Wear(EquipmentSO equipment)
+    public void Drop(EquipmentSO item)
     {
-        foreach (var item in Items)
+        //drop item to map 
+        foreach (var i in items)
         {
-            if (equipment.LevelRequired > Player.Instance.data.level) return;
-
-            if (item.EquipmentSlot == equipment.EquipmentSlot)
-            {
-                //push to inventory
-                Items.Remove(item);
-            }
-            Items.Add(equipment);
+            if (item.EquipmentSlot == EquipmentSlot.MeleeWeapon) return;
+            if (item.EquipmentSlot == EquipmentSlot.DistanceWeapon) return;
+            if (item.EquipmentSlot == EquipmentSlot.MagicWeapon) return;
+            if (item.EquipmentSlot == EquipmentSlot.Shield) return;
+            items.Remove(item);
         }
     }
 
-    public void Remove(EquipmentSO equipment)
+    public void Remove(EquipmentSO item)
     {
-        foreach (var item in Items)
+        //remove item to inventory
+        foreach (var i in items)
         {
-            if (equipment.EquipmentSlot == EquipmentSlot.MeleeWeapon) return;
-            if (equipment.EquipmentSlot == EquipmentSlot.DistanceWeapon) return;
-            if (equipment.EquipmentSlot == EquipmentSlot.MagicWeapon) return;
-            if (equipment.EquipmentSlot == EquipmentSlot.Shield) return;
-            Items.Remove(equipment);
+            if (item.EquipmentSlot == EquipmentSlot.MeleeWeapon) return;
+            if (item.EquipmentSlot == EquipmentSlot.DistanceWeapon) return;
+            if (item.EquipmentSlot == EquipmentSlot.MagicWeapon) return;
+            if (item.EquipmentSlot == EquipmentSlot.Shield) return;
+            items.Remove(item);
         }
     }
 }

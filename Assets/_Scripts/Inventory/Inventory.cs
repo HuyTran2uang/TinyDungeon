@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Inventory : MonoBehaviour
+public class Inventory : MonoBehaviourSingleton<Inventory>
 {
     public List<ItemSO> items;
 

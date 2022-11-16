@@ -1,19 +1,22 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SkinManager : MonoBehaviourSingleton<SkinManager>
+public class SkinManagerUI : MonoBehaviourSingleton<SkinManager>
 {
-    [SerializeField] List<Skin> _skins;
+    Skin[] Skins => SkinManager.Instance.skins;
     [SerializeField] private GameObject _skinPrefabs;
 
     private void Awake() => _skinPrefabs = Resources.Load<GameObject>("UI/SkinItem");
 
-    private void Start() => SetListSkins();
+    private void OnEnable()
+    {
+        SetListSkins();
+    }
 
     private void SetListSkins()
     {
-        foreach (var i in _skins)
+        Helpers.DestroyChildren(transform);
+        foreach (var i in Skins)
         {
             GameObject skinPrefab = Instantiate(_skinPrefabs, transform);
             Text notify = skinPrefab.transform.Find("Notify").GetComponent<Text>();
@@ -35,27 +38,30 @@ public class SkinManager : MonoBehaviourSingleton<SkinManager>
             }
             else
             {
+                Destroy(btnBuy.gameObject);
                 if (i.isUsing)
                 {
                     btnUse.gameObject.SetActive(false);
                     notify.text = "using";
                 }
-
-                Destroy(btnBuy);
-                btnBuy.gameObject.SetActive(false);
-                btnUse.gameObject.SetActive(true);
-                notify.text = "owned";
+                else
+                {
+                    btnUse.gameObject.SetActive(true);
+                    notify.text = "owned";
+                }
             }
         }
     }
 
     public void Buy(Skin skin)
     {
-        for (int i = 0; i < _skins.Count; i++)
+        for (int i = 0; i < Skins.Length; i++)
         {
-            if (_skins[i] == skin && !_skins[i].isOwned)
+            if (Skins[i] == skin && !Skins[i].isOwned)
             {
-                _skins[i].isOwned = true;
+                if (Player.Instance.data.diamond < skin.skinSO.PriceBuy) return;
+                Player.Instance.data.diamond -= skin.skinSO.PriceBuy;
+                Skins[i].isOwned = true;
                 var btnBuy = transform.GetChild(i).transform.Find("ButtonBuy").gameObject;
                 var btnUse = transform.GetChild(i).transform.Find("ButtonUse").gameObject;
                 var notify = transform.GetChild(i).transform.Find("Notify").GetComponent<Text>();
@@ -69,80 +75,26 @@ public class SkinManager : MonoBehaviourSingleton<SkinManager>
 
     public void Use(Skin skin)
     {
-        for (int i = 0; i < _skins.Count; i++)
+        for (int i = 0; i < Skins.Length; i++)
         {
-            if (_skins[i] == skin && !_skins[i].isUsing)
+            if (!Skins[i].isOwned) continue;
+            if (Skins[i] == skin && !Skins[i].isUsing)
             {
-                _skins[i].isUsing = true;
+                Skins[i].isUsing = true;
                 var btnUse = transform.GetChild(i).transform.Find("ButtonUse").gameObject;
                 var notify = transform.GetChild(i).transform.Find("Notify").GetComponent<Text>();
                 btnUse.SetActive(false);
                 notify.text = "using";
+                PlayerSkin.Instance.SetSkin(Player.Instance.Type);
             }
-            if (_skins[i].isOwned && _skins[i].skinSO.SkinSlot == skin.skinSO.SkinSlot && _skins[i] != skin)
+            if (Skins[i].skinSO.SkinSlot == skin.skinSO.SkinSlot && Skins[i] != skin)
             {
-                _skins[i].isUsing = false;
+                Skins[i].isUsing = false;
                 var btnUse = transform.GetChild(i).transform.Find("ButtonUse").gameObject;
                 var notify = transform.GetChild(i).transform.Find("Notify").GetComponent<Text>();
                 btnUse.SetActive(true);
                 notify.text = "owned";
             }
         }
-    }
-
-    public Skin GetSkinMeleeBody()
-    {
-        foreach (var i in _skins)
-            if (i.isOwned && i.isUsing && i.skinSO.SkinSlot == SkinSlot.MeleeBody)
-                return i;
-        return null;
-    }
-
-    public Skin GetSkinDistanceBody()
-    {
-        foreach (var i in _skins)
-            if (i.isOwned && i.isUsing && i.skinSO.SkinSlot == SkinSlot.DistanceBody)
-                return i;
-        return null;
-    }
-
-    public Skin GetSkinMagicBody()
-    {
-        foreach (var i in _skins)
-            if (i.isOwned && i.isUsing && i.skinSO.SkinSlot == SkinSlot.MagicBody)
-                return i;
-        return null;
-    }
-
-    public Skin GetSkinMeleeWeapon()
-    {
-        foreach (var i in _skins)
-            if (i.isOwned && i.isUsing && i.skinSO.SkinSlot == SkinSlot.MeleeWeapon)
-                return i;
-        return null;
-    }
-
-    public Skin GetSkinDistanceWeapon()
-    {
-        foreach (var i in _skins)
-            if (i.isOwned && i.isUsing && i.skinSO.SkinSlot == SkinSlot.DistanceWeapon)
-                return i;
-        return null;
-    }
-
-    public Skin GetSkinMagicWeapon()
-    {
-        foreach (var i in _skins)
-            if (i.isOwned && i.isUsing && i.skinSO.SkinSlot == SkinSlot.MagicWeapon)
-                return i;
-        return null;
-    }
-
-    public Skin GetSkinShield()
-    {
-        foreach (var i in _skins)
-            if (i.isOwned && i.isUsing && i.skinSO.SkinSlot == SkinSlot.Shield)
-                return i;
-        return null;
     }
 }

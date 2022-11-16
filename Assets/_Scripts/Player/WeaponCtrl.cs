@@ -5,23 +5,11 @@ public class WeaponCtrl : MonoBehaviour
 {
     [field: SerializeField]
     public EquipmentSO Weapon { get; set; }
-    SpriteRenderer spriteRenderer;
     Vector3 originalEuler;
-
-    private void Awake()
-    {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-    }
 
     private void Start()
     {
         originalEuler = transform.localEulerAngles;
-    }
-
-    private void Update()
-    {
-        if (Weapon != null)
-            spriteRenderer.sprite = Weapon.ItemImage;
     }
 
     public void Attack()

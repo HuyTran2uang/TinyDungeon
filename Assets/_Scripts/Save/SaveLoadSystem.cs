@@ -8,12 +8,14 @@ public class SaveLoadSystem : MonoBehaviour
     {
         GameData data = new GameData();
         Player.Instance.data = data.playerData;
+        SkinManager.Instance.skins = data.skins;
     }
 
     public void SaveGame()
     {
         GameData data = new GameData();
         data.playerData = Player.Instance.data;
+        data.skins = SkinManager.Instance.skins;
 
         SaveLoadManager.SaveData(data);
     }
@@ -22,5 +24,6 @@ public class SaveLoadSystem : MonoBehaviour
     {
         GameData data = SaveLoadManager.LoadData();
         Player.Instance.data = data.playerData;
+        SkinManager.Instance.skins = data.skins;
     }
 }
