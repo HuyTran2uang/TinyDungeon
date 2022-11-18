@@ -15,7 +15,9 @@ MonoBehaviour:
   <IsStack>k__BackingField: 0
   <Name>k__BackingField: Shield Lv10
   <MaxStackSize>k__BackingField: 1
-  <Description>k__BackingField: 
+  <Description>k__BackingField: 'Level: 1
+
+    Armor: 25'
   <ItemImage>k__BackingField: {fileID: 1510833809, guid: 597ed162e470b6941bd944019b8ce012, type: 3}
   <PriceBuy>k__BackingField: 0
   <PriceSell>k__BackingField: 1000

@@ -15,7 +15,9 @@ MonoBehaviour:
   <IsStack>k__BackingField: 0
   <Name>k__BackingField: Bow Lv1
   <MaxStackSize>k__BackingField: 1
-  <Description>k__BackingField: 
+  <Description>k__BackingField: 'Level: 1
+
+    Attack: 15'
   <ItemImage>k__BackingField: {fileID: 1631129473, guid: 26408dd2f54fc8c4d9e4574537f14639, type: 3}
   <PriceBuy>k__BackingField: 0
   <PriceSell>k__BackingField: 300

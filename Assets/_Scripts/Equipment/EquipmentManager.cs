@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Equipment : MonoBehaviourSingleton<Equipment>
+public class EquipmentManager : MonoBehaviourSingleton<EquipmentManager>
 {
-    public List<EquipmentSO> items;
+    public List<Equipment> items;
 
     PlayerType Type => Player.Instance.Type;
 
@@ -159,7 +159,7 @@ public class Equipment : MonoBehaviourSingleton<Equipment>
         }
     }
 
-    public void Drop(EquipmentSO item)
+    public void Drop(Equipment item)
     {
         //drop item to map 
         foreach (var i in items)
@@ -172,7 +172,7 @@ public class Equipment : MonoBehaviourSingleton<Equipment>
         }
     }
 
-    public void Remove(EquipmentSO item)
+    public void Remove(Equipment item)
     {
         //remove item to inventory
         foreach (var i in items)

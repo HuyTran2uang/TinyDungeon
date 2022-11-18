@@ -1,64 +1,35 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SkinManager : MonoBehaviourSingleton<SkinManager>
 {
-    public Skin[] skins;
+    [SerializeField] List<Skin> _skins = new List<Skin>();
 
-    public Skin GetSkinMeleeBody()
+    public List<Skin> Skins => _skins;
+
+    public void Buy(Skin skin)
     {
-        foreach (var i in skins)
-            if (i.isOwned && i.isUsing && i.skinSO.SkinSlot == SkinSlot.MeleeBody)
-                return i;
-        return null;
+        foreach (var i in Skins)
+        {
+            if (i != skin) continue;
+            if (Player.Instance.data.diamond < skin.SkinBase.PriceBuy) return;
+            Player.Instance.data.diamond -= skin.SkinBase.PriceBuy;
+            i.isOwned = true;
+            MenuManager.Instance.OpenMenu("Skin");
+            return;
+        }
     }
 
-    public Skin GetSkinDistanceBody()
+    public void Use(Skin skin)
     {
-        foreach (var i in skins)
-            if (i.isOwned && i.isUsing && i.skinSO.SkinSlot == SkinSlot.DistanceBody)
-                return i;
-        return null;
-    }
-
-    public Skin GetSkinMagicBody()
-    {
-        foreach (var i in skins)
-            if (i.isOwned && i.isUsing && i.skinSO.SkinSlot == SkinSlot.MagicBody)
-                return i;
-        return null;
-    }
-
-    public Skin GetSkinMeleeWeapon()
-    {
-        foreach (var i in skins)
-            if (i.isOwned && i.isUsing && i.skinSO.SkinSlot == SkinSlot.MeleeWeapon)
-                return i;
-        return null;
-    }
-
-    public Skin GetSkinDistanceWeapon()
-    {
-        foreach (var i in skins)
-            if (i.isOwned && i.isUsing && i.skinSO.SkinSlot == SkinSlot.DistanceWeapon)
-                return i;
-        return null;
-    }
-
-    public Skin GetSkinMagicWeapon()
-    {
-        foreach (var i in skins)
-            if (i.isOwned && i.isUsing && i.skinSO.SkinSlot == SkinSlot.MagicWeapon)
-                return i;
-        return null;
-    }
-
-    public Skin GetSkinShield()
-    {
-        foreach (var i in skins)
-            if (i.isOwned && i.isUsing && i.skinSO.SkinSlot == SkinSlot.Shield)
-                return i;
-        return null;
+        foreach (var i in Skins)
+        {
+            if (i == skin) i.isUsing = true;
+            if (i.isOwned && i.isUsing && i.SkinBase.SkinSlot == skin.SkinBase.SkinSlot && i != skin)
+            {
+                i.isUsing = false;
+            }
+            MenuManager.Instance.OpenMenu("Skin");
+        }
     }
 }

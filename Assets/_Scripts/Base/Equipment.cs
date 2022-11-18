@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu]
-public class EquipmentSO : ItemSO
+public class Equipment : Item
 {
     [field: SerializeField]
     public EquipmentSlot EquipmentSlot { get; private set; }

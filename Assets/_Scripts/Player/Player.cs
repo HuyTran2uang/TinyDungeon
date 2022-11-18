@@ -8,24 +8,25 @@ public class Player : MonoBehaviourSingleton<Player>
     public int MaxExp => _base.Exp * data.level;
 
     public int MaxHealth => _base.Health * data.level;
+
     public int MaxMana => _base.Mana * data.level;
 
     public int RecoveryHp => _base.RecoveryHealth
-                                + Equipment.Instance.RecoveryHp
-                                + Mathf.FloorToInt(Equipment.Instance.RecoveryHealthPercent * MaxHealth / 100);
+                                + EquipmentManager.Instance.RecoveryHp
+                                + Mathf.FloorToInt(EquipmentManager.Instance.RecoveryHealthPercent * MaxHealth / 100);
 
     public int RecoveryMp => _base.RecoveryMana
-                                + Equipment.Instance.RecoveryMp
-                                + Mathf.FloorToInt(Equipment.Instance.RecoveryManaPercent * MaxMana / 100);
+                                + EquipmentManager.Instance.RecoveryMp
+                                + Mathf.FloorToInt(EquipmentManager.Instance.RecoveryManaPercent * MaxMana / 100);
 
-    public int Attack => Equipment.Instance.Attack + data.level * 10;
-    public int Armor => Defense + Equipment.Instance.Armor + data.level * 10;
-    public int Speed => _base.Speed + Equipment.Instance.Speed + data.level / 2;
+    public int Attack => EquipmentManager.Instance.Attack + data.level * 10;
+    public int Armor => Defense + EquipmentManager.Instance.Armor + data.level * 10;
+    public int Speed => _base.Speed + EquipmentManager.Instance.Speed + data.level / 2;
 
-    public int Melee => data.melee + Equipment.Instance.Melee;
-    public int Distance => data.distance + Equipment.Instance.Distance;
-    public int Magic => data.magic + Equipment.Instance.Magic;
-    public int Defense => data.defense + Equipment.Instance.Defense;
+    public int Melee => _base.Melee + data.melee + EquipmentManager.Instance.Melee;
+    public int Distance => _base.Distance + data.distance + EquipmentManager.Instance.Distance;
+    public int Magic => _base.Magic + data.magic + EquipmentManager.Instance.Magic;
+    public int Defense => _base.Defense + data.defense + EquipmentManager.Instance.Defense;
 
     [field: SerializeField]
     public PlayerType Type { get; private set; }

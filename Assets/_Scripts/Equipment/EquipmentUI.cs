@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class EquipmentUI : MonoBehaviour
 {
-    public List<EquipmentSO> items;
+    public List<Equipment> items;
     public Image meleeWeapon;
     public Image distanceWeapon;
     public Image magicWeapon;
@@ -32,7 +32,7 @@ public class EquipmentUI : MonoBehaviour
         ring1.gameObject.SetActive(false);
         ring2.gameObject.SetActive(false);
 
-        items = Equipment.Instance.items;
+        items = EquipmentManager.Instance.items;
         SetListItemEquip();
     }
 
@@ -155,7 +155,7 @@ public class EquipmentUI : MonoBehaviour
         }
     }
 
-    private void OnSelectButtonClicked(EquipmentSO item)
+    private void OnSelectButtonClicked(Equipment item)
     {
         MenuManager.Instance.OpenMenu("Item");
         var menus = FindObjectsOfType<Menu>();
@@ -165,13 +165,13 @@ public class EquipmentUI : MonoBehaviour
             var btnDisabled = menu.GetComponent<Button>();
             var btnBack = menu.transform.Find("ButtonBack").GetComponent<Button>();
             var image = menu.transform.Find("Image").GetComponent<Image>();
-            var listStats = FindObjectOfType<ListStats>();
+            var description = menu.transform.Find("Description").GetComponent<Text>();
             var listBtn = menu.transform.Find("ListButton");
             var btnDrop = listBtn.transform.Find("ButtonDrop").GetComponent<Button>();
             var btnRemove = listBtn.transform.Find("ButtonRemove").GetComponent<Button>();
             var btnUse = listBtn.transform.Find("ButtonUse").GetComponent<Button>();
 
-            if (item.EquipmentSlot == EquipmentSlot.MeleeWeapon || item.EquipmentSlot == EquipmentSlot.DistanceWeapon || item.EquipmentSlot == EquipmentSlot.MagicWeapon)
+            if (item.EquipmentSlot == EquipmentSlot.MeleeWeapon || item.EquipmentSlot == EquipmentSlot.DistanceWeapon || item.EquipmentSlot == EquipmentSlot.MagicWeapon || item.EquipmentSlot == EquipmentSlot.Shield)
             {
                 btnDrop.gameObject.SetActive(false);
                 btnUse.gameObject.SetActive(false);
@@ -181,37 +181,11 @@ public class EquipmentUI : MonoBehaviour
             {
                 btnDrop.gameObject.SetActive(false);
                 btnUse.gameObject.SetActive(false);
+                btnRemove.gameObject.SetActive(true);
                 btnRemove.onClick.AddListener(() => Remove(item));
             }
-            //show stats
-            listStats.stats.Clear();
-            listStats.stats.Add($"Name: {item.Name}");
-            if (item.LevelRequired != 0)
-                listStats.stats.Add($"Level: {item.LevelRequired}");
-            if (item.Attack != 0)
-                listStats.stats.Add($"Attack: {item.Attack}");
-            if (item.Armor != 0)
-                listStats.stats.Add($"Armor: {item.Armor}");
-            if (item.Speed != 0)
-                listStats.stats.Add($"Speed: {item.Speed}");
-            if (item.RecoveryHp != 0)
-                listStats.stats.Add($"RecoveryHp: {item.RecoveryHp}");
-            if (item.RecoveryMp != 0)
-                listStats.stats.Add($"RecoveryMp: {item.RecoveryMp}");
-            if (item.RecoveryHealthPercent != 0)
-                listStats.stats.Add($"RecoveryHealthPercent: {item.RecoveryHealthPercent}");
-            if (item.RecoveryManaPercent != 0)
-                listStats.stats.Add($"RecoveryManaPercent: {item.RecoveryManaPercent}");
-            if (item.Melee != 0)
-                listStats.stats.Add($"Melee: {item.Melee}");
-            if (item.Distance != 0)
-                listStats.stats.Add($"Distance: {item.Distance}");
-            if (item.Magic != 0)
-                listStats.stats.Add($"Magic: {item.Magic}");
-            if (item.Defense != 0)
-                listStats.stats.Add($"Defense: {item.Defense}");
-
-            listStats.ShowListStats();
+            //show description
+            description.text = item.Description;
             //
             btnDisabled.onClick.AddListener(() => OnBackToInventory());
             btnBack.onClick.AddListener(() => OnBackToInventory());
@@ -226,9 +200,9 @@ public class EquipmentUI : MonoBehaviour
         MenuManager.Instance.OpenMenu("Inventory");
     }
 
-    private void Remove(EquipmentSO item)
+    private void Remove(Equipment item)
     {
-        Inventory.Instance.items.Add(item);
+        InventoryManager.Instance.items.Add(item);
         items.Remove(item);
         MenuManager.Instance.OpenMenu("Inventory");
     }

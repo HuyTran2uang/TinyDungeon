@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ItemSO : ScriptableObject
+public class Item : ScriptableObject
 {
     public int Id => GetInstanceID();
 
@@ -25,4 +25,11 @@ public class ItemSO : ScriptableObject
 
     [field: SerializeField]
     public int PriceSell { get; private set; }
+
+    public virtual void Use(Item item) { }
+
+    public virtual void RemoveFromInventory()
+    {
+        //
+    }
 }

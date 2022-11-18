@@ -46,5 +46,16 @@ public class PlayerMana : MonoBehaviourSingleton<PlayerMana>, IObserverLevelUp
         }
     }
 
+    public void RecoveryMana(int mana)
+    {
+        if (CurrentMana + mana > MaxMana)
+        {
+            mana = MaxMana - CurrentMana;
+            CurrentMana += mana;
+        }
+        else
+            CurrentMana += mana;
+    }
+
     public void OnNotifyLevelUp() => CurrentMana = MaxMana;
 }

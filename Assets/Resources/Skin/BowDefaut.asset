@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 224ed53dd34f5244dbfaa2d8909b6bfb, type: 3}
-  m_Name: BowDefault
+  m_Script: {fileID: 11500000, guid: 18182db4d9a388540b9c7dcac5dfa742, type: 3}
+  m_Name: BowDefaut
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Bow Default
   <SkinSlot>k__BackingField: 4

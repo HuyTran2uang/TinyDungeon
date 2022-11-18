@@ -1,100 +1,159 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SkinManagerUI : MonoBehaviourSingleton<SkinManager>
+public class SkinManagerUI : MonoBehaviour
 {
-    Skin[] Skins => SkinManager.Instance.skins;
-    [SerializeField] private GameObject _skinPrefabs;
+    [SerializeField] private GameObject _skinItemPrefab;
+    [SerializeField] private Transform _left;
+    [SerializeField] private Transform _mid;
+    [SerializeField] private Transform _right;
+    public List<Skin> Skins => SkinManager.Instance.Skins;
 
-    private void Awake() => _skinPrefabs = Resources.Load<GameObject>("UI/SkinItem");
+    private void Awake()
+    {
+        _skinItemPrefab = Resources.Load<GameObject>("UI/SkinItem");
+        _left = transform.Find("Left");
+        _mid = transform.Find("Mid");
+        _right = transform.Find("Right");
+    }
 
     private void OnEnable()
     {
-        SetListSkins();
+        Helpers.DestroyChildren(_left);
+        Helpers.DestroyChildren(_mid);
+        Helpers.DestroyChildren(_right);
+        ListSkins();
     }
 
-    private void SetListSkins()
+    private void ListSkins()
     {
-        Helpers.DestroyChildren(transform);
-        foreach (var i in Skins)
+        switch (Player.Instance.Type)
         {
-            GameObject skinPrefab = Instantiate(_skinPrefabs, transform);
-            Text notify = skinPrefab.transform.Find("Notify").GetComponent<Text>();
-            Image image = skinPrefab.transform.Find("Image").GetComponent<Image>();
-            Button btnBuy = skinPrefab.transform.Find("ButtonBuy").GetComponent<Button>();
-            Button btnUse = skinPrefab.transform.Find("ButtonUse").GetComponent<Button>();
-            //set image
-            image.sprite = i.skinSO.Image;
-            image.preserveAspect = true;
-            //set onclick
-            btnBuy.onClick.AddListener(() => Buy(i));
-            btnUse.onClick.AddListener(() => Use(i));
-            //
-            if (!i.isOwned)
+            case PlayerType.Melee:
+                ListSkinsMelee();
+                break;
+            case PlayerType.Distance:
+                ListSkinsDistance();
+                break;
+            case PlayerType.Magic:
+                ListSkinsMagic();
+                break;
+        }
+    }
+
+    private void ListSkinsMelee()
+    {
+        foreach (var skin in Skins)
+        {
+            if (skin.SkinBase.SkinSlot == SkinSlot.MeleeBody)
             {
-                btnBuy.gameObject.SetActive(true);
-                btnUse.gameObject.SetActive(false);
-                notify.text = ($"{i.skinSO.PriceBuy} dia");
+                GameObject skinItem = Instantiate(_skinItemPrefab, _left);
+                SetSkinItem(skinItem, skin);
+                continue;
             }
-            else
+
+            if (skin.SkinBase.SkinSlot == SkinSlot.MeleeWeapon)
             {
-                Destroy(btnBuy.gameObject);
-                if (i.isUsing)
-                {
-                    btnUse.gameObject.SetActive(false);
-                    notify.text = "using";
-                }
-                else
-                {
-                    btnUse.gameObject.SetActive(true);
-                    notify.text = "owned";
-                }
+                GameObject skinItem = Instantiate(_skinItemPrefab, _mid);
+                SetSkinItem(skinItem, skin);
+                continue;
+            }
+
+            if (skin.SkinBase.SkinSlot == SkinSlot.Shield)
+            {
+                GameObject skinItem = Instantiate(_skinItemPrefab, _right);
+                SetSkinItem(skinItem, skin);
+                continue;
             }
         }
     }
 
-    public void Buy(Skin skin)
+    private void ListSkinsDistance()
     {
-        for (int i = 0; i < Skins.Length; i++)
+        foreach (var skin in Skins)
         {
-            if (Skins[i] == skin && !Skins[i].isOwned)
+            if (skin.SkinBase.SkinSlot == SkinSlot.DistanceBody)
             {
-                if (Player.Instance.data.diamond < skin.skinSO.PriceBuy) return;
-                Player.Instance.data.diamond -= skin.skinSO.PriceBuy;
-                Skins[i].isOwned = true;
-                var btnBuy = transform.GetChild(i).transform.Find("ButtonBuy").gameObject;
-                var btnUse = transform.GetChild(i).transform.Find("ButtonUse").gameObject;
-                var notify = transform.GetChild(i).transform.Find("Notify").GetComponent<Text>();
-                btnBuy.SetActive(false);
-                btnUse.SetActive(true);
-                notify.text = "owned";
-                return;
+                GameObject skinItem = Instantiate(_skinItemPrefab, _left);
+                SetSkinItem(skinItem, skin);
+                continue;
+            }
+
+            if (skin.SkinBase.SkinSlot == SkinSlot.DistanceWeapon)
+            {
+                GameObject skinItem = Instantiate(_skinItemPrefab, _mid);
+                SetSkinItem(skinItem, skin);
+                continue;
             }
         }
     }
 
-    public void Use(Skin skin)
+    private void ListSkinsMagic()
     {
-        for (int i = 0; i < Skins.Length; i++)
+        foreach (var skin in Skins)
         {
-            if (!Skins[i].isOwned) continue;
-            if (Skins[i] == skin && !Skins[i].isUsing)
+            if (skin.SkinBase.SkinSlot == SkinSlot.MagicBody)
             {
-                Skins[i].isUsing = true;
-                var btnUse = transform.GetChild(i).transform.Find("ButtonUse").gameObject;
-                var notify = transform.GetChild(i).transform.Find("Notify").GetComponent<Text>();
-                btnUse.SetActive(false);
-                notify.text = "using";
-                PlayerSkin.Instance.SetSkin(Player.Instance.Type);
+                GameObject skinItem = Instantiate(_skinItemPrefab, _left);
+                SetSkinItem(skinItem, skin);
+                continue;
             }
-            if (Skins[i].skinSO.SkinSlot == skin.skinSO.SkinSlot && Skins[i] != skin)
+
+            if (skin.SkinBase.SkinSlot == SkinSlot.MagicWeapon)
             {
-                Skins[i].isUsing = false;
-                var btnUse = transform.GetChild(i).transform.Find("ButtonUse").gameObject;
-                var notify = transform.GetChild(i).transform.Find("Notify").GetComponent<Text>();
-                btnUse.SetActive(true);
-                notify.text = "owned";
+                GameObject skinItem = Instantiate(_skinItemPrefab, _mid);
+                SetSkinItem(skinItem, skin);
+                continue;
             }
         }
+    }
+
+    private void SetSkinItem(GameObject skinItem, Skin skin)
+    {
+        Button button = skinItem.GetComponent<Button>();
+        Image image = skinItem.transform.Find("Image").GetComponent<Image>();
+        Text notify = skinItem.transform.Find("Notify").GetComponent<Text>();
+        button.onClick.AddListener(() => ShowSkin(skin));
+        //set
+        if (!skin.isOwned && !skin.isUsing)
+        {
+            image.sprite = skin.SkinBase.Image;
+            notify.text = $"{skin.SkinBase.PriceBuy} Dia";
+        }
+        else if (!skin.isUsing)
+        {
+            image.sprite = skin.SkinBase.Image;
+            notify.text = "Owned";
+        }
+        else
+        {
+            image.sprite = skin.SkinBase.Image;
+            notify.text = "Using";
+        }
+    }
+
+    private void ShowSkin(Skin skin)
+    {
+        MenuManager.Instance.OpenMenu("Item");
+        ItemMenu.Instance.buttonDisabled.onClick.AddListener(() => OpenSkinMenu());
+        ItemMenu.Instance.buttonBack.onClick.AddListener(() => OpenSkinMenu());
+        ItemMenu.Instance.image.sprite = skin.SkinBase.Image;
+        ItemMenu.Instance.description.text = $"{skin.SkinBase.Name}\n{skin.SkinBase.PriceBuy} Diamond";
+        if (skin.isOwned && !skin.isUsing)
+        {
+            ItemMenu.Instance.buttonUse.gameObject.SetActive(true);
+            ItemMenu.Instance.buttonUse.onClick.AddListener(() => skin.Use());
+        }
+        if (!skin.isOwned)
+        {
+            ItemMenu.Instance.buttonBuy.gameObject.SetActive(true);
+            ItemMenu.Instance.buttonBuy.onClick.AddListener(() => skin.Buy());
+        }
+    }
+
+    private void OpenSkinMenu()
+    {
+        MenuManager.Instance.OpenMenu("Skin");
     }
 }

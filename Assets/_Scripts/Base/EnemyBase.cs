@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu]
-public class EnemySO : ScriptableObject
+public class EnemyBase : ScriptableObject
 {
     [field: SerializeField]
     public string Name { get; private set; }

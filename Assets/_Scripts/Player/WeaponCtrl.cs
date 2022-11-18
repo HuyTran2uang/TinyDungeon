@@ -4,7 +4,7 @@ using UnityEngine;
 public class WeaponCtrl : MonoBehaviour
 {
     [field: SerializeField]
-    public EquipmentSO Weapon { get; set; }
+    public Equipment Weapon { get; set; }
     Vector3 originalEuler;
 
     private void Start()
@@ -25,7 +25,7 @@ public class WeaponCtrl : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
     }
 
-    public void ChangeWeapon(EquipmentSO _base)
+    public void ChangeWeapon(Equipment _base)
     {
         Weapon = _base;
     }

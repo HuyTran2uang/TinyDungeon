@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHealth : MonoBehaviour, IDamageable, IObserverLevelUp
+public class PlayerHealth : MonoBehaviourSingleton<PlayerHealth>, IDamageable, IObserverLevelUp
 {
     UIDamageable _damageable;
 
@@ -39,6 +39,17 @@ public class PlayerHealth : MonoBehaviour, IDamageable, IObserverLevelUp
             else
                 CurrentHealth += RecoveryHp;
         }
+    }
+
+    public void RecoveryHealth(int health)
+    {
+        if (CurrentHealth + health > MaxHealth)
+        {
+            health = MaxHealth - CurrentHealth;
+            CurrentHealth += health;
+        }
+        else
+            CurrentHealth += health;
     }
 
     private void FixedUpdate()

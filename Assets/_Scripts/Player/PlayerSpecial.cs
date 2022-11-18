@@ -26,14 +26,14 @@ public class PlayerSpecial : MonoBehaviour
         switch (Player.Instance.Type)
         {
             case PlayerType.Melee:
-                Damage = Mathf.FloorToInt((Player.Instance.Melee + Player.Instance.data.level * 10 + Equipment.Instance.Attack) * 1.5f);
+                Damage = Mathf.FloorToInt((Player.Instance.Melee + Player.Instance.data.level * 10 + EquipmentManager.Instance.Attack) * 1.5f);
                 MeleeSpecial();
                 break;
             case PlayerType.Distance:
-                Damage = Mathf.FloorToInt((Player.Instance.Distance + Player.Instance.data.level * 10 + Equipment.Instance.Attack) * 1.5f);
+                Damage = Mathf.FloorToInt((Player.Instance.Distance + Player.Instance.data.level * 10 + EquipmentManager.Instance.Attack) * 1.5f);
                 break;
             case PlayerType.Magic:
-                Damage = Mathf.FloorToInt((Player.Instance.Magic + Player.Instance.data.level * 10 + Equipment.Instance.Attack) * 1.5f);
+                Damage = Mathf.FloorToInt((Player.Instance.Magic + Player.Instance.data.level * 10 + EquipmentManager.Instance.Attack) * 1.5f);
                 break;
         }
     }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private EnemySO _base;
+    [SerializeField] private EnemyBase _base;
     EnemyBar _UIEnemyBar;
 
     public string Name

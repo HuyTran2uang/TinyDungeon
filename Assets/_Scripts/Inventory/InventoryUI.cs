@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InventoryUI : MonoBehaviour
 {
-    public List<ItemSO> items;
+    public List<Item> items;
 
     private void OnEnable()
     {

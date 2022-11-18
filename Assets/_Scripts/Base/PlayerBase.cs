@@ -56,6 +56,10 @@ public class PlayerBase
     {
         get { return _magic; }
     }
+    public int Defense
+    {
+        get { return _defense; }
+    }
     public int MaxExpMelee
     {
         get { return _maxExpMelee; }

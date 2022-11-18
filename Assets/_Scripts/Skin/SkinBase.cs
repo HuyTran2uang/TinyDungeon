@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu]
-public class SkinSO : ScriptableObject
+public class SkinBase : ScriptableObject
 {
     public int Id => GetInstanceID();
 
